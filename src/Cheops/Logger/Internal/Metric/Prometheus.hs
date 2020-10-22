@@ -1,6 +1,6 @@
 -- | 
--- Metrics support.
-module Cheops.Logger.Internal.Metric
+-- Metrics support using prometheus.
+module Cheops.Logger.Internal.Metric.Prometheus
   ( submitLog
   , flushLog
   ) where
@@ -10,6 +10,7 @@ import Prometheus.Metric.WindowGauge as Window
 
 -- | Write metrics when message is submitted.
 submitLog :: IO () -> IO ()
+{-# INLINE submitLog #-}
 submitLog f = do
   incCounter metric_submitted_total
   f
@@ -17,6 +18,7 @@ submitLog f = do
 
 -- | Write metrics when message is flushed.
 flushLog :: IO () -> IO ()
+{-# INLINE flushLog #-}
 flushLog f = do
   f
   incCounter metric_written_total

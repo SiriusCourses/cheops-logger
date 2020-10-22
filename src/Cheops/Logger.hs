@@ -12,7 +12,8 @@
 -- @
 -- run :: LoggerConfig -> IO ()
 -- run config = do
---   'withLogger' config $ \logger -> do
+--   'withLogger' config $ \initial_logger -> do
+--     let ?logger = initial_logger
 --     'logSay' ?logger message1"
 --     'logDebug' ?logger "message2"
 --     let ?logger  = 'addContext' ('sl' "host" "127.0.0.1")
@@ -56,7 +57,7 @@ module Cheops.Logger
   -- $setup
   ) where
 
-import Cheops.Logger.Internal.Metric
+import Cheops.Logger.Internal.Metrics (flushLog, submitLog)
 import Cheops.Logger.Internal.Structured
 import Cheops.Logger.Internal.Writer
 import Colog.Concurrent
