@@ -1,0 +1,7 @@
+packages: .
+
+source-repository-package
+  type: git
+  location: https://github.com/qnikst/prometheus-haskell
+  tag: 43713450a4a4882db22baf39c1efd0dc672ae0b5
+  subdir: prometheus-client-extra

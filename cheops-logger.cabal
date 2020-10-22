@@ -1,0 +1,94 @@
+cabal-version:       3.0
+name:                cheops-logger
+version:             0.0.1.0
+synopsis:            Structured logger implementation.
+description:
+   Implementation of a very simple structured logger.
+   This logger is provides following functionality:
+
+   * asynchronous background logging (using co-log-concurrent);
+   * structured logging with katip like interface;
+   * handle pattern approach that is compatible with other approaches
+     for effect stucturing.
+
+   Entry tutorial can be found on GitHub Readme page.
+   
+   Reference documentation can be found in "Cheops.Logger" module.
+
+   Internal module describe details and design choices.
+
+   This logger asynchronously emits json messages to the stdout, of the form, 
+   pretty-printed for convenience:
+
+   @
+   { "namespace":"server.package"
+   , "severity": \"DEBUG\"
+   , "thread":19
+   , "message":"some long text "
+   , "data":
+      { "ip":"8.8.8.8"
+      , "http.request_id":"b362cd5db5c193c05312af4d3a399955"
+      , "http.method":\"DELETE\"
+      , "http.path":"\/url\/"
+      , "user_id":"123"
+      } 
+   }
+   @
+
+   The library allows to keep track and output additional user information ("data")
+   with the messages. Implement fast and safe API for message output.
+
+   However does not implement:
+
+     * pretty-printing
+     * timestamps
+     * sending messages to remote services
+     * message colouring
+
+   All that functionality that be implemented by the external tools that the program
+   pipes messages to.
+
+
+license:             MPL-2.0
+license-file:        LICENSE
+author:              Alexander Vershilov
+maintainer:          alexander.vershilov@sirius.online
+copyright:           (C) 2019-2020 Фонд "Талант и Успех"
+category:            System
+build-type:          Simple
+extra-source-files:  ChangeLog.md
+
+library
+  exposed-modules:
+    Cheops.Logger
+    Cheops.Logger.Internal.Structured
+    Cheops.Logger.Internal.Writer
+  default-extensions:
+    BlockArguments
+    DerivingStrategies
+    FlexibleContexts
+    GeneralizedNewtypeDeriving
+    ImportQualifiedPost
+    LambdaCase
+    OverloadedStrings
+    RankNTypes
+    RecordWildCards
+  other-extensions:
+    UnliftedFFITypes
+    MagicHash
+    FlexibleContexts
+    LambdaCase
+  build-depends:       base >=4.11 && <5
+                      , aeson ^>= 1.5
+                      , bytestring ^>=0.10
+                      , text ^>=1.2
+                      , containers ^>=0.6
+                      , co-log-core ^>=0.2
+                      , co-log-concurrent ^>=0.5
+                      , prometheus-client ^>= 1.0
+                      , prometheus-client-extra ^>=0.1
+                      , string-conv ^>=0.1
+                      , stm ^>=2.5
+  hs-source-dirs:      src
+  ghc-options: -Wall -Werror
+  default-language:    Haskell2010
