@@ -56,6 +56,7 @@ module Cheops.Logger
   -- $setup
   ) where
 
+import Cheops.Logger.Internal.Metric
 import Cheops.Logger.Internal.Structured
 import Cheops.Logger.Internal.Writer
 import Colog.Concurrent
@@ -63,8 +64,6 @@ import Colog.Concurrent.Internal
 import Colog.Core hiding (Severity, Info)
 import Control.Concurrent
 import Data.Aeson
-import Prometheus
-import Prometheus.Metric.WindowGauge as Window
 import System.IO
 import qualified Data.Sequence as Seq
 import qualified Data.Text as T
@@ -105,11 +104,11 @@ withLogger LoggerConfig{..} f
   | otherwise =
       withBackgroundLogger
        loggerConfigMessagesInFlight
-       (LogAction $ \x -> feed x >> incCounter metric_written_total >> Window.decGauge metric_in_flight)
+       (LogAction $ flushLog . feed)
        (hFlush stdout)
        $ \(LogAction log_action) ->
          f $ LoggerEnv
-              (LogAction $ \x -> incCounter metric_submitted_total >> log_action x >> Window.incGauge metric_in_flight)
+              (LogAction $ submitLog . log_action)
               Seq.Empty
   where
     LogAction feed = feedHandle stdout
@@ -211,18 +210,3 @@ logEmergency x = logSay x EmergencyS
 -- These metrics could tell if configuration is good and if the package is health. For example if
 -- @ghc_logger_max_in_flight@ is close to default limit then you may want to extend buffer size, give more CPU
 -- units to the application, or improve internal structures in the package.
-
--- | Metrics.
-metric_submitted_total :: Counter
-metric_submitted_total = unsafeRegister $
-  counter $ Info "ghc_logger_submitted_total" "Total amount of submitted messages"
-
--- | Metrics.
-metric_written_total :: Counter
-metric_written_total = unsafeRegister $
-  counter $ Info "ghc_logger_written_total" "Total amount of written messages"
-
--- | Metrics.
-metric_in_flight :: WinGauge
-metric_in_flight = unsafeRegister $
-  Window.gauge $ Info "ghc_logger_max_in_flight" "Maximum number of in flight messages"

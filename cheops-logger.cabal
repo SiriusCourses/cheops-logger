@@ -63,6 +63,7 @@ library
     Cheops.Logger
     Cheops.Logger.Internal.Structured
     Cheops.Logger.Internal.Writer
+    Cheops.Logger.Internal.Metric
   default-extensions:
     BlockArguments
     DerivingStrategies

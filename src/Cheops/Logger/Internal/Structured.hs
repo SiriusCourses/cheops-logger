@@ -67,8 +67,7 @@ data Message = Message
   }
 
 
-
--- | Katip compatibility.
+-- | Efficient message builder.
 newtype LogStr = LogStr TLB.Builder
   deriving newtype IsString
   deriving newtype Semigroup
@@ -106,6 +105,7 @@ newtype PushContext = PushContext (Seq Structured -> Seq Structured)
 -- @sl "foo" 123@
 --
 -- Will add @"foo":123@ key pair to the current list of the attributes.
+-- Submitted value is stored with json encoding.
 sl :: ToJSON a => T.Text -> a -> PushContext
 sl label msg = PushContext \x ->
   x |> Attr label (toEncoding msg)
