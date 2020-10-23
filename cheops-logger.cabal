@@ -58,12 +58,40 @@ category:            System
 build-type:          Simple
 extra-source-files:  ChangeLog.md
 
+
+library metrics-prometheus
+  default-language: Haskell2010
+  visibility: public
+  exposed-modules:
+     Cheops.Logger.Internal.Metric.Prometheus
+  reexported-modules:
+     Cheops.Logger.Internal.Metric.Prometheus as Cheops.Logger.Internal.Metrics
+  hs-source-dirs: src
+  default-extensions:
+    OverloadedStrings
+  build-depends:
+      base >= 4.11 && <5
+    , prometheus-client ^>= 1.0
+    , prometheus-client-extra ^>=0.1
+    , text ^>=1.2
+
+library metrics-noop
+  visibility: public
+  exposed-modules:
+     Cheops.Logger.Internal.Metric.Noop
+  reexported-modules:
+     Cheops.Logger.Internal.Metric.Noop as Cheops.Logger.Internal.Metrics
+  hs-source-dirs: src
+  default-language: Haskell2010
+  build-depends:
+    base >= 4.11 && <5
+  
+
 library
   exposed-modules:
     Cheops.Logger
     Cheops.Logger.Internal.Structured
     Cheops.Logger.Internal.Writer
-    Cheops.Logger.Internal.Metric
   default-extensions:
     BlockArguments
     DerivingStrategies
@@ -79,17 +107,27 @@ library
     MagicHash
     FlexibleContexts
     LambdaCase
-  build-depends:       base >=4.11 && <5
-                      , aeson ^>= 1.5
-                      , bytestring ^>=0.10
-                      , text ^>=1.2
-                      , containers ^>=0.6
-                      , co-log-core ^>=0.2
-                      , co-log-concurrent ^>=0.5
-                      , prometheus-client ^>= 1.0
-                      , prometheus-client-extra ^>=0.1
-                      , string-conv ^>=0.1
-                      , stm ^>=2.5
-  hs-source-dirs:      src
+  build-depends:
+      base >=4.11 && <5
+    , aeson ^>= 1.5
+    , bytestring ^>=0.10
+    , text ^>=1.2
+    , containers ^>=0.6
+    , co-log-core ^>=0.2
+    , co-log-concurrent ^>=0.5
+    , string-conv ^>=0.1
+    , stm ^>=2.5
+  signatures: Cheops.Logger.Internal.Metrics
   ghc-options: -Wall -Werror
+  hs-source-dirs:      src
   default-language:    Haskell2010
+
+
+executable Example
+  hs-source-dirs: examples
+  main-is: Main.hs
+  build-depends:
+    base >=4.11 && <5,
+    cheops-logger,
+    cheops-logger:metrics-prometheus
+  default-language: Haskell2010

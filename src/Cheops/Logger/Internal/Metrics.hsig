@@ -1,0 +1,3 @@
+signature Cheops.Logger.Internal.Metrics where
+  flushLog :: IO () -> IO ()
+  submitLog ::  IO () -> IO ()

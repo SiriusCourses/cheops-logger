@@ -16,7 +16,7 @@ jobs:
     - uses: actions/setup-haskell@v1
       with:
         ghc-version: '8.10.2'
-        cabal-version: '3.0'
+        cabal-version: '3.2'
 
     - name: Cache
       uses: actions/cache@v1
@@ -33,7 +33,7 @@ jobs:
     - name: Install dependencies
       run: |
         cabal update
-        cabal build --only-dependencies --enable-tests --enable-benchmarks
+        cabal build --only-dependencies --enable-tests --enable-benchmarks cheops-logger
     - name: Build
       run: cabal build --enable-tests --enable-benchmarks all
     - name: Run tests
