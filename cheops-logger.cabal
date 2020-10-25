@@ -3,22 +3,14 @@ name:                cheops-logger
 version:             0.0.1.0
 synopsis:            Structured logger implementation.
 description:
-   Implementation of a very simple structured logger.
-   This logger is provides following functionality:
 
-   * asynchronous background logging (using co-log-concurrent);
-   * structured logging with katip like interface;
-   * handle pattern approach that is compatible with other approaches
-     for effect stucturing.
+   The library implements of a very simple structured logging. This package provides
+   a library that can be used in [co-log](https://hackage.haskell.org/package/co-log)
+   ecosystem. It provides:
 
-   Entry tutorial can be found on GitHub Readme page.
-   
-   Reference documentation can be found in "Cheops.Logger" module.
-
-   Internal module describe details and design choices.
-
-   This logger asynchronously emits json messages to the stdout, of the form, 
-   pretty-printed for convenience:
+     * "Cheops.Logger.Structured" — API for adding structured context to the log messages
+     * "Cheops.Logger.Internal.Writer" — efficient function for dumping logs in the 
+       following format.
 
    @
    { "namespace":"server.package"
@@ -34,6 +26,26 @@ description:
       } 
    }
    @
+   
+   == cheops-logger:instance
+
+   In addition the package provides an @cheops-logger:instance@ library that
+   can be used in the application as-is. The library is provides following
+   functionality:
+
+   * asynchronous background logging using [co-log-concurrent](https://hackage.haskell.org/package/co-log-concurrent);
+   * configuration
+   * optional metrics support
+
+   == References
+
+   Entry tutorial can be found on GitHub Readme page.
+   
+   Reference documentation can be found in "Cheops.Logger" module.
+
+   Internal module describe details and design choices.
+
+   == Notes
 
    The library allows to keep track and output additional user information ("data")
    with the messages. Implement fast and safe API for message output.
@@ -58,14 +70,13 @@ category:            System
 build-type:          Simple
 extra-source-files:  ChangeLog.md
 
-
 library metrics-prometheus
   default-language: Haskell2010
   visibility: public
   exposed-modules:
      Cheops.Logger.Internal.Metric.Prometheus
   reexported-modules:
-     Cheops.Logger.Internal.Metric.Prometheus as Cheops.Logger.Internal.Metrics
+     Cheops.Logger.Internal.Metric.Prometheus as Cheops.Logger.Metrics
   hs-source-dirs: src
   default-extensions:
     OverloadedStrings
@@ -79,17 +90,36 @@ library metrics-noop
   visibility: public
   exposed-modules:
      Cheops.Logger.Internal.Metric.Noop
-  reexported-modules:
-     Cheops.Logger.Internal.Metric.Noop as Cheops.Logger.Internal.Metrics
   hs-source-dirs: src
   default-language: Haskell2010
   build-depends:
     base >= 4.11 && <5
   
 
-library
+library instance
+  visibility: public
+  default-language: Haskell2010
   exposed-modules:
     Cheops.Logger
+  default-extensions:
+    ImportQualifiedPost
+    RecordWildCards
+    OverloadedStrings
+  hs-source-dirs:
+    logger
+  signatures: Cheops.Logger.Metrics
+  build-depends:
+      base >= 4.11 && <5
+    , aeson ^>= 1.5
+    , co-log-core
+    , cheops-logger
+    , co-log-concurrent ^>=0.5
+    , stm ^>=2.5
+  ghc-options: -Wall -Werror
+
+library
+  exposed-modules:
+    Cheops.Logger.Structured
     Cheops.Logger.Internal.Structured
     Cheops.Logger.Internal.Writer
   default-extensions:
@@ -114,10 +144,7 @@ library
     , text ^>=1.2
     , containers ^>=0.6
     , co-log-core ^>=0.2
-    , co-log-concurrent ^>=0.5
     , string-conv ^>=0.1
-    , stm ^>=2.5
-  signatures: Cheops.Logger.Internal.Metrics
   ghc-options: -Wall -Werror
   hs-source-dirs:      src
   default-language:    Haskell2010
@@ -128,6 +155,6 @@ executable Example
   main-is: Main.hs
   build-depends:
     base >=4.11 && <5,
-    cheops-logger,
+    cheops-logger:instance,
     cheops-logger:metrics-prometheus
   default-language: Haskell2010
