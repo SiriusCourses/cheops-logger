@@ -31,9 +31,9 @@ module Colog.Json.Internal.Structured
   , Message(..)
   , LogStr(..)
   , PushContext(..)
-    -- * Katip compatibility.
+    -- * Internals.
   , Severity(..)
-  , commonSeverity
+  , encodeSeverity
   , showLS
   , ls
   , sl
@@ -52,7 +52,7 @@ import Foreign.C
 import GHC.Conc
 import GHC.Exts hiding (toList)
 
--- | Structured message.
+-- | Part of the structured message.
 data Structured
   = Segment T.Text -- ^ Part of the message that is associated this the context of code.
   | Attr T.Text Encoding -- ^ Add attribute to the list.
@@ -85,16 +85,16 @@ data Severity
   deriving (Show, Bounded, Eq, Ord, Enum)
 
 -- | Convert severity into the one accepted by the loger.
-commonSeverity :: Severity -> Aeson.Encoding
-{-# INLINE commonSeverity #-}
-commonSeverity DebugS     = Aeson.text "DEBUG"
-commonSeverity InfoS      = Aeson.text "INFO"
-commonSeverity NoticeS    = Aeson.text "NOTICE"
-commonSeverity WarningS   = Aeson.text "WARNING"
-commonSeverity ErrorS     = Aeson.text "ERROR"
-commonSeverity CriticalS  = Aeson.text "CRITICAL"
-commonSeverity AlertS     = Aeson.text "ALERT"
-commonSeverity EmergencyS = Aeson.text "EMERGENCY"
+encodeSeverity :: Severity -> Aeson.Encoding
+{-# INLINE encodeSeverity #-}
+encodeSeverity DebugS     = Aeson.text "DEBUG"
+encodeSeverity InfoS      = Aeson.text "INFO"
+encodeSeverity NoticeS    = Aeson.text "NOTICE"
+encodeSeverity WarningS   = Aeson.text "WARNING"
+encodeSeverity ErrorS     = Aeson.text "ERROR"
+encodeSeverity CriticalS  = Aeson.text "CRITICAL"
+encodeSeverity AlertS     = Aeson.text "ALERT"
+encodeSeverity EmergencyS = Aeson.text "EMERGENCY"
 
 -- | Wrapper over the structured message builder.
 newtype PushContext = PushContext (Seq Structured -> Seq Structured)

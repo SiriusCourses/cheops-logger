@@ -90,7 +90,7 @@ encodeMessage Message{..} = Aeson.pairs $ mconcat fields where
      [ case namespace of
          Nothing -> mempty
          Just xs -> Aeson.pair "namespace" $ Aeson.lazyText xs
-     , Aeson.pair "severity" $ commonSeverity message_severity
+     , Aeson.pair "severity" $ encodeSeverity message_severity
      , Aeson.pair "thread" $ Aeson.int thread_id
      , case user_data of
          Nothing -> mempty

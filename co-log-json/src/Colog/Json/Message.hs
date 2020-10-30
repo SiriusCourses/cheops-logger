@@ -1,8 +1,11 @@
 module Colog.Json.Message
-  ( PushContext(..)
+  ( -- * Message
+    LogStr
   , ls
+  , showLS
+    -- * Context
+  , PushContext
   , sl
   ) where
-
 
 import Colog.Json.Internal.Structured as Internal
