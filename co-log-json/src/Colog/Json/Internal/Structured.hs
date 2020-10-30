@@ -1,9 +1,9 @@
 {-# LANGUAGE UnliftedFFITypes #-}
 {-# LANGUAGE MagicHash #-}
+{-# OPTIONS_HADDOCK not-home #-}
 -- |
 --
--- @Cheops.Logger.Structured@ provides an instance of the structured log messages that current
--- package relies on.
+-- Structure for tracing context.
 --
 -- We assume that each message ('Message') can be tagged with two types of values:
 --
@@ -25,9 +25,8 @@
 -- **Compatibility note** internal structure of the message may be changed in the future in case
 -- if it's proven that another implementation is faster or more memory efficient. However the
 -- higher level API is likely to be stable.
---
-module Cheops.Logger.Internal.Structured
-  ( -- * Log datastructures.
+module Colog.Json.Internal.Structured
+  ( -- * Log datastructure.
     Structured(..)
   , Message(..)
   , LogStr(..)

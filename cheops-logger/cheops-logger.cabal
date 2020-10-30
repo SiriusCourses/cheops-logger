@@ -1,0 +1,69 @@
+cabal-version:       3.0
+name:                cheops-logger
+version:             0.0.1.0
+synopsis:            Structured logger implementation.
+description:
+
+   In addition the package provides an @cheops-logger@ library that can be used in the application
+   as-is to log all messages. The library is combines:
+
+   * asynchronous background logging using [co-log-concurrent](https://hackage.haskell.org/package/co-log-concurrent);
+   * configuration using [yaml](https://hackage.haskell.org/package/yaml);
+   * optional metrics support
+
+
+license:             MPL-2.0
+license-file:        LICENSE
+author:              Alexander Vershilov
+maintainer:          alexander.vershilov@sirius.online
+copyright:           (C) 2019-2020 Фонд "Талант и Успех"
+category:            System
+build-type:          Simple
+extra-source-files:  ChangeLog.md
+
+library metrics-prometheus
+  default-language: Haskell2010
+  visibility: public
+  exposed-modules:
+     Cheops.Logger.Internal.Metric.Prometheus
+  reexported-modules:
+     Cheops.Logger.Internal.Metric.Prometheus as Cheops.Logger.Metrics
+  hs-source-dirs: src
+  default-extensions:
+    OverloadedStrings
+  build-depends:
+      base >= 4.11 && <5
+    , prometheus-client ^>= 1.0
+    , prometheus-client-extra ^>=0.1
+    , text ^>=1.2
+
+library metrics-noop
+  visibility: public
+  exposed-modules:
+     Cheops.Logger.Internal.Metric.Noop
+  hs-source-dirs: src
+  default-language: Haskell2010
+  build-depends:
+    base >= 4.11 && <5
+  
+
+library
+  default-language: Haskell2010
+  exposed-modules:
+    Cheops.Logger
+  default-extensions:
+    ImportQualifiedPost
+    RecordWildCards
+    OverloadedStrings
+  hs-source-dirs:
+    src
+  signatures: Cheops.Logger.Metrics
+  build-depends:
+      base >= 4.11 && <5
+    , aeson ^>= 1.5
+    , co-log-core
+    , co-log-json ^>=0.0
+    , co-log-concurrent ^>=0.5
+    , stm ^>=2.5
+  ghc-options: -Wall -Werror
+

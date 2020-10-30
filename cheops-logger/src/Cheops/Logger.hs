@@ -26,16 +26,15 @@ module Cheops.Logger
     withLogger
   , defCapacity
   , LoggerConfig(..)
-  , module Cheops.Logger.Structured
+  , module Colog.Json
     -- * Metrics support
     -- $metrics-support
   -- $setup
   ) where
 
 import Cheops.Logger.Metrics (flushLog, submitLog)
-import Cheops.Logger.Internal.Structured
-import Cheops.Logger.Internal.Writer
-import Cheops.Logger.Structured
+import Colog.Json
+import Colog.Json.Action
 import Colog.Concurrent
 import Colog.Concurrent.Internal
 import Colog.Core hiding (Severity, Info)
@@ -76,7 +75,7 @@ withLogger LoggerConfig{..} f
        $ \(LogAction log_action) ->
          f $ mkLogger (LogAction $ submitLog . log_action)
   where
-    LogAction feed = feedHandle stdout
+    LogAction feed = logToHandle stdout
 
 
 
