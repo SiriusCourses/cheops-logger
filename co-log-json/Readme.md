@@ -1,3 +1,7 @@
+[![Hackage](https://img.shields.io/hackage/v/co-log-json.svg)](https://hackage.haskell.org/package/co-log-json)
+[![MPL-2.0 license](https://img.shields.io/badge/license-MPL--2.0-blue.svg)](https://github.com/qnikst/co-log-json/blob/master/LICENSE)
+![Haskell CI](https://github.com/cheopslab/cheops-logger/workflows/Haskell%20CI/badge.svg)
+
 # co-log-json
 
 `co-log-json` allows writing structured logs in your application.
