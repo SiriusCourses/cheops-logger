@@ -16,8 +16,6 @@ build-type:          Simple
 executable Main
   main-is: Main.hs
   default-language: Haskell2010
-  exposed-modules:
-    Cheops.Logger
   build-depends:
       base >= 4.11 && <5
     , cheops-logger
