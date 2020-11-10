@@ -65,6 +65,7 @@ module Colog.Json
 import Colog.Core hiding (Severity)
 import Colog.Json.Internal.Structured
 import Control.Concurrent
+import Control.Monad.IO.Class
 import Data.Sequence qualified as Seq
 import Data.Text qualified as T
 
@@ -170,7 +171,7 @@ addNamespace ns LoggerEnv{..} = LoggerEnv{context=context Seq.|> Segment ns, ..}
 
 logDebug, logNotice, logInfo, logWarn,
   logErr, logAlert, logCrit, logEmergency
-  :: LoggerEnv -> LogStr -> IO ()
+  :: MonadIO m => LoggerEnv -> LogStr -> m ()
 logDebug  x = logSay x DebugS
 logNotice x = logSay x InfoS
 logInfo x = logSay x InfoS
@@ -181,10 +182,12 @@ logAlert x = logSay x AlertS
 logEmergency x = logSay x EmergencyS
 
 -- | Internal logger function.
-logSay :: LoggerEnv -- ^ Logger handle.
+logSay :: MonadIO m
+       => LoggerEnv -- ^ Logger handle.
        -> Severity -- ^ Message severity.
        -> LogStr -- ^ Message itself.
-       -> IO ()
-logSay (LoggerEnv action context) lvl msg = do
+       -> m ()
+logSay (LoggerEnv action context) lvl msg = liftIO $ do
   tid <- myThreadId
   unLogAction action $ Message lvl (mkThreadId tid) context msg
+{-# SPECIALIZE logSay :: LoggerEnv -> Severity -> LogStr -> IO () #-}
