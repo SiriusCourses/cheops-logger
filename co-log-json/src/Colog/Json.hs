@@ -1,8 +1,8 @@
 -- |
--- Provide a code that allows to use structured logging. Here
--- by structured logging we mean a way to add a additional structured
--- data (context) to the log messages, and a tooling that allows keep 
--- track of the current context and attach it to all the messages.
+-- Top-level module for structured logging support.  Structured logging provides messages in
+-- a machine-readable format and passing an additional user data to the messages (context)
+-- to the log messages, and tooling that allows keep track of the current context and attach
+-- it to all the messages.
 --
 -- Short example:
 --
@@ -26,9 +26,9 @@
 --   * @(5)@ extend initial context with a new user data
 --
 -- __NOTE__ You may notice a bit of an extra boilerplate code here. It can be removed
--- by using any effect handling approach, like ReaderT, mtl, various effects
+-- by using any effect handling approach, like ReaderT, MTL, various effects
 -- system or service pattern. However this library does not commit to any of
--- those approaches and provide simple @IO@ interface, so there can be a light
+-- those approaches and provides simple @IO@ interface, so there can be a light
 -- wrapper with the system of your choice. E.g. The library author prefer to use 
 -- @ImplicitParams@ extension, as you can see in cheops-logger package.
 --
@@ -71,28 +71,28 @@ import qualified Data.Text as T
 
 -- $logger-env
 --
--- For each message we may want to attach an additional information
+-- For each message we attach additional information
 --
 --   * @thread id@ — it can be useful to group messages by the
---       thread when debugging, espeacially in a case if thread
---       can be associated with the request processing.
+--     thread when debugging, especially in a case if a thread
+--     can be associated with the request processing.
 --
---   * @namespace@ — '.' delimited text that describes the componet
---       that the log was emited from. It allows simple logs
---       filtering in external system, or in the logger action.
+--   * @namespace@ — '.' delimited text that describes the component
+--     that the log was emitted from. It allows simple logs
+--     filtering in an external system, or in the logger action.
 --
 --   * @severity@ — information how urgent the message is.
 --
---   * @user_data@ - any user data in a key-value form, key is a
---       text value, and value is an json-encoded value.
+--   * @user_data@ - any user data in a key-value form, the key is a
+--       text value, and the value is a JSON-encoded value.
 --
--- In order to keep track of that information we introduce 'LoggerEnv' handle,
--- we can emit messages using that hadle, see writing logs section,
--- and modify current context, see adding context section.
+-- In order to keep track of that information we introduce 'LoggerEnv' handle.
+-- It can be used to emit messages with additional information,
+-- see writing logs section, and modify current context, see adding context section.
 
--- | Logger environment, is used to keep information about
+-- | Logger environment is used to keep information about
 -- the current context and modify it. When any log message
--- is emitted the current cotext is added to the message.
+-- is emitted the current context is added to the message.
 data LoggerEnv = LoggerEnv
   { action :: LogAction IO Message -- ^ Internal log action.
   , context :: Seq.Seq Structured -- ^ Current context.
@@ -102,13 +102,23 @@ data LoggerEnv = LoggerEnv
 emptyLogger :: LoggerEnv
 emptyLogger = LoggerEnv (LogAction $ \_ -> pure ()) Seq.empty
 
--- | Covert ordinary co-log action into 'LoggerEnv' this way
+-- | Covert ordinary colog action into 'LoggerEnv' this way
 -- we can keep track of the current context and modify it.
+--
+-- @
+-- let ctx = 'mkLogger' ('Colog.Json.Action.logToHandle' 'System.IO.stderr')
+-- in 'logDebug' ctx "message"
+-- @
+-- 
 mkLogger :: LogAction IO Message -> LoggerEnv
 mkLogger action = LoggerEnv action Seq.empty
 
 -- | Covert 'LoggerEnv' back into colog 'LogAction', so we can
 -- combie it with the rest of the colog ecosystem.
+--
+-- @
+-- 'Colog.Core.Action.cfilter' (\(sev, _) -> sev > 'Colog.Json.DebugS') 'unLogger' ctx
+-- @
 unLogger :: LoggerEnv -> LogAction IO (Severity, LogStr)
 unLogger (LoggerEnv action st) = LogAction $ \(lvl, msg) -> do
   tid <- myThreadId
@@ -161,10 +171,11 @@ addNamespace ns LoggerEnv{..} = LoggerEnv{context=context Seq.|> Segment ns, ..}
 -- log concatenation. Currently it uses 'Data.Text.Lazy.Builder' but it's an implementation
 -- detail and may change in the future.
 --
--- 'LogStr' implements 'Data.String.IsString' class, so you can write constant strings
--- without any boilerplate. For other types you should use 'ls' or 'showLS' names are
--- taken from 'Katip' interface.
-
+-- 'LogStr' can be created is several ways:
+--    * From the string literal using 'Data.String.IsString' interface
+--    * From the string like data that can be converted to text, using 'ls' function
+--    * From the type that has a 'Show' instance using 'showLS'
+--
 
 -- $writing-helpers
 -- Library provides helper for each 'Severity' level.
