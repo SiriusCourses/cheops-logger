@@ -11,12 +11,19 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        cabal: ["3.2"]
+        ghc:
+          - "8.10.2"
+          - "8.8.4"
+
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-haskell@v1
       with:
-        ghc-version: '8.10.2'
-        cabal-version: '3.2'
+        ghc-version: ${{ matrics.ghc }}
+        cabal-version: ${{ matrix.cabal }}
 
     - name: Cache
       uses: actions/cache@v1

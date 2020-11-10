@@ -66,8 +66,8 @@ import Colog.Core hiding (Severity)
 import Colog.Json.Internal.Structured
 import Control.Concurrent
 import Control.Monad.IO.Class
-import Data.Sequence qualified as Seq
-import Data.Text qualified as T
+import qualified Data.Sequence as Seq
+import qualified Data.Text as T
 
 -- $logger-env
 --

@@ -10,12 +10,12 @@ import Colog.Core
 import Colog.Json.Internal.Structured
 import Control.Exception
 import Data.Aeson.Encoding as Aeson
-import Data.ByteString.Builder qualified as Builder
+import qualified Data.ByteString.Builder as Builder
 import Data.Coerce
 import Data.Foldable
-import Data.List.NonEmpty qualified as NE
-import Data.Text.Lazy qualified as TL
-import Data.Text.Lazy.Builder qualified as TLB
+import qualified Data.List.NonEmpty as NE
+import qualified Data.Text.Lazy as TL
+import qualified Data.Text.Lazy.Builder as TLB
 import System.IO
 
 -- | Dump logs to the output. On the contrary to the usual co-log functions this one

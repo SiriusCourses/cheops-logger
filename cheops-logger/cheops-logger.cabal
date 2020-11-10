@@ -52,7 +52,6 @@ library
   exposed-modules:
     Cheops.Logger
   default-extensions:
-    ImportQualifiedPost
     RecordWildCards
     OverloadedStrings
   hs-source-dirs:

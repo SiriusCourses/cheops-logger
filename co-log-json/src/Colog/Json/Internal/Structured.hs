@@ -46,8 +46,8 @@ import Data.Aeson.Encoding as Aeson
 import Data.Sequence
 import Data.String
 import Data.String.Conv
-import Data.Text qualified as T
-import Data.Text.Lazy.Builder qualified as TLB
+import qualified Data.Text as T
+import qualified Data.Text.Lazy.Builder as TLB
 import Foreign.C
 import GHC.Conc
 import GHC.Exts hiding (toList)
