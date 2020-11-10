@@ -117,7 +117,7 @@ mkLogger action = LoggerEnv action Seq.empty
 -- combie it with the rest of the colog ecosystem.
 --
 -- @
--- 'Colog.Core.Action.cfilter' (\(sev, _) -> sev > 'Colog.Json.DebugS') 'unLogger' ctx
+-- 'Colog.Core.Action.cfilter' (\\(sev, _) -> sev > 'Colog.Json.DebugS') 'unLogger' ctx
 -- @
 unLogger :: LoggerEnv -> LogAction IO (Severity, LogStr)
 unLogger (LoggerEnv action st) = LogAction $ \(lvl, msg) -> do
@@ -172,6 +172,7 @@ addNamespace ns LoggerEnv{..} = LoggerEnv{context=context Seq.|> Segment ns, ..}
 -- detail and may change in the future.
 --
 -- 'LogStr' can be created is several ways:
+--
 --    * From the string literal using 'Data.String.IsString' interface
 --    * From the string like data that can be converted to text, using 'ls' function
 --    * From the type that has a 'Show' instance using 'showLS'
