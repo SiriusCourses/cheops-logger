@@ -5,6 +5,8 @@ synopsis:            Structured logger implementation.
 description:
 
   Example application that uses the logger.
+  
+  Example is currently unbuildable, see https://github.com/cheopslab/cheops-logger/issues/4
 
 license:             MPL-2.0
 author:              Alexander Vershilov
