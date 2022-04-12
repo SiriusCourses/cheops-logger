@@ -65,7 +65,7 @@ library
     FlexibleContexts
   build-depends:
       base >=4.11 && <5
-    , aeson ^>= 1.5
+    , aeson ^>= 1.5 || ^>= 2.0
     , bytestring ^>=0.10
     , text ^>=1.2
     , containers ^>=0.6
