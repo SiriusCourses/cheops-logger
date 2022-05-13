@@ -65,12 +65,12 @@ library
     FlexibleContexts
   build-depends:
       base >=4.11 && <5
-    , aeson ^>= 1.5
-    , bytestring ^>=0.10
-    , text ^>=1.2
+    , aeson >= 1.5 && < 2.1
+    , bytestring >=0.10 && < 0.12
+    , text >=1.2 && < 2.1
     , containers ^>=0.6
-    , co-log-core ^>=0.2
-    , string-conv ^>=0.1
+    , co-log-core >=0.2 && < 0.4
+    , string-conv >=0.1 && < 0.3
   hs-source-dirs:      src
   ghc-options:         -Wall
   default-language:    Haskell2010

@@ -10,6 +10,7 @@ import Colog.Core
 import Colog.Json.Internal.Structured
 import Control.Exception
 import Data.Aeson.Encoding as Aeson
+import qualified Data.Aeson.Key as Aeson.Key
 import qualified Data.ByteString.Builder as Builder
 import Data.Coerce
 import Data.Foldable
@@ -102,7 +103,7 @@ encodeMessage Message{..} = Aeson.pairs $ mconcat fields where
      | Segment tm <- toList attributes
      ]
   user_data = fold <$> NE.nonEmpty
-    [ pair key attributeValue
+    [ pair (Aeson.Key.fromText key) attributeValue
     | Attr key attributeValue <- toList attributes
     ]
 
