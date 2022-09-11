@@ -59,7 +59,7 @@ library
   -- signatures: Cheops.Logger.Metrics
   build-depends:
       base >= 4.11 && <5
-    , aeson ^>= 1.5
+    , aeson ^>= 1.5 || (>= 2.0 && <2.2)
     , co-log-core
     , co-log-json ^>=0.0
     , co-log-concurrent ^>=0.5
