@@ -185,7 +185,7 @@ logDebug, logNotice, logInfo, logWarn,
   logErr, logAlert, logCrit, logEmergency
   :: MonadIO m => LoggerEnv -> LogStr -> m ()
 logDebug  x = logSay x DebugS
-logNotice x = logSay x InfoS
+logNotice x = logSay x NoticeS
 logInfo x = logSay x InfoS
 logWarn x = logSay x WarningS
 logErr x = logSay x ErrorS
