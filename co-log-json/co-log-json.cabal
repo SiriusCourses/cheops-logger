@@ -39,11 +39,16 @@ license:             MPL-2.0
 license-file:        LICENSE
 author:              Alexander Vershilov
 maintainer:          alexander.vershilov@sirius.online
-copyright:           (C) 2019-2020 Фонд Талант и Успех
+copyright:           (C) 2019-2023 Фонд Талант и Успех
 category:            System
 extra-source-files: 
   CHANGELOG.md
   Readme.md
+tested-with:
+   GHC ==9.2.2
+    || ==9.0.2
+    || ==8.10.7
+
 
 library
   exposed-modules:
