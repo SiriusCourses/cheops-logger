@@ -1,6 +1,6 @@
 cabal-version:       3.0
 name:                cheops-logger
-version:             0.0.1.0
+version:             0.1.0.0
 synopsis:            Structured logger implementation.
 description:
 
@@ -65,7 +65,7 @@ library
       base >= 4.11 && <5
     , aeson ^>= 1.5 || (>= 2.0 && <2.2)
     , co-log-core
-    , co-log-json ^>=0.0
+    , co-log-json ^>=0.1
     , co-log-concurrent ^>=0.5
     , metrics-prometheus
     , stm ^>=2.5

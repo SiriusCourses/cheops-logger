@@ -7,15 +7,15 @@ description:
    The library implements of a very simple approach to structured logging, that
    ca be used with the [co-log](https://hackage.haskell.org/package/co-log)
    ecosystem or on it's own see [cheops-logger](https://github.com/cheopslab/cheops-logger).
-
+   .
    It provides:
-
+   .
      * "Colog.Json" — API for adding structured context to the log messages
      * "Colog.Json.Action" — efficient function for dumping logs in the 
        following format.
-
+   .
    By default it emits logs in the following format (pretty-printed for convenience):
-
+   .
    @
    { "namespace":"server.package" -- namespace for the component
    , "severity": \"DEBUG\"          -- severity level
@@ -30,7 +30,7 @@ description:
       } 
    }
    @
-
+   .
    The most interesting thing here is the field @data@ that can be used by the user
    to add additional structured info to the message.
 
