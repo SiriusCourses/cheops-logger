@@ -1,6 +1,6 @@
 cabal-version:       2.4
 name:                co-log-json
-version:             0.1.0.0
+version:             0.1.0.1
 synopsis:            Structured messages support in co-log ecosystem.
 description:
 
@@ -70,9 +70,9 @@ library
     FlexibleContexts
   build-depends:
       base >=4.11 && <5
-    , aeson >= 2.0 && < 2.2
-    , bytestring >=0.10 && < 0.12
-    , text >=1.2 && < 2.1
+    , aeson >= 2.0 && < 2.3
+    , bytestring >=0.10 && < 0.13
+    , text >=1.2 && < 2.2
     , containers ^>=0.6
     , co-log-core >=0.2 && < 0.4
     , string-conv >=0.1 && < 0.3
