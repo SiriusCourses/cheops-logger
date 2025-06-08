@@ -1,7 +1,6 @@
 packages:
   co-log-json
   cheops-logger
---  examples
 
 source-repository-package
   type: git
